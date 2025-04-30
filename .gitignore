@@ -1,4 +1,4 @@
-server/routes/ombdb.js
+server/routes/omdb.js
 node_modules
 package-lock.json
 package.json
