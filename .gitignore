@@ -1,0 +1,28 @@
+# macOS system files
+.DS_Store
+
+# Node dependencies
+frontend/node_modules/
+server/node_modules/
+
+# Build output
+frontend/dist/
+frontend/.angular/
+frontend/tmp/
+frontend/out-tsc/
+server/dist/
+server/tmp/
+
+# Logs
+frontend/npm-debug.log
+frontend/yarn-error.log
+server/npm-debug.log
+server/yarn-error.log
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Misc
+*.log
