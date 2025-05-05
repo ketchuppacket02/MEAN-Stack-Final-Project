@@ -1,0 +1,48 @@
+<div class="movie-list-container">
+  <h2>Movie List</h2>
+
+  <form class="search-form" (ngSubmit)="searchOmdb()">
+    <input [(ngModel)]="searchTitle" name="searchTitle" placeholder="Search OMDB by title" required />
+    <button type="submit" [disabled]="searching">Search OMDB</button>
+  </form>
+
+  <div *ngIf="omdbResults.length" class="omdb-results">
+    <h3>OMDB Results</h3>
+    <div class="card-grid">
+      <div class="movie-card" *ngFor="let movie of omdbResults">
+        <img *ngIf="movie.poster && movie.poster !== 'N/A'" [src]="movie.poster" alt="Poster" />
+        <div class="movie-info">
+          <div class="movie-title">{{ movie.title }}</div>
+          <div class="movie-year">({{ movie.year }})</div>
+          <button (click)="addMovieFromOmdb(movie)">Add to My List</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 *ngIf="movies.length">My Movie List</h3>
+  <div class="card-grid">
+    <div class="movie-card" *ngFor="let movie of movies">
+      <img *ngIf="movie.poster && movie.poster !== 'N/A'" [src]="movie.poster" alt="Poster" />
+      <div class="movie-info">
+        <div class="movie-title">{{ movie.title }}</div>
+        <div class="movie-year">{{ movie.year }}</div>
+        <button (click)="showMovieInfo(movie)">View Info</button>
+        <button class="remove-btn" (click)="removeMovie(movie)">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="movie-modal" *ngIf="selectedMovie" (click)="closeMovieInfo()">
+    <div class="movie-modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeMovieInfo()">&times;</button>
+      <img *ngIf="selectedMovie.poster && selectedMovie.poster !== 'N/A'" [src]="selectedMovie.poster" alt="Poster" />
+      <h2>{{ selectedMovie.title }}</h2>
+      <p><strong>Year:</strong> {{ selectedMovie.year }}</p>
+      <p *ngIf="selectedMovie.imdbID"><strong>IMDb ID:</strong> {{ selectedMovie.imdbID }}</p>
+      <p *ngIf="selectedMovie.type"><strong>Type:</strong> {{ selectedMovie.type }}</p>
+    </div>
+  </div>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+</div>
