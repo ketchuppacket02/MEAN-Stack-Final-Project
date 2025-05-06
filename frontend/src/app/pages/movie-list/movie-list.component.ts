@@ -43,7 +43,7 @@ export class MovieListComponent {
         this.searching = false;
       },
       error: (err) => {
-        this.error = 'OMDB search failed';
+        this.error = 'Failed to search OMDB';
         this.searching = false;
       }
     });

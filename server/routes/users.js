@@ -1,7 +1,8 @@
+// routes/users.js
 const express = require('express');
-const router = express.Router();
-const User = require('../models/user');
-const Movie = require('../models/movie');
+const router  = express.Router();
+const User    = require('../models/user');
+const Movie   = require('../models/movie');
 
 // Create a new user
 router.post('/', async (req, res) => {
@@ -13,6 +14,7 @@ router.post('/', async (req, res) => {
     await user.save();
     res.status(201).json(user);
   } catch (err) {
+    console.error('Create user error:', err.message);
     res.status(500).json({ error: 'Failed to create user', details: err.message });
   }
 });
@@ -25,36 +27,33 @@ router.get('/:id/movies', async (req, res) => {
 
     res.json(user.movies);
   } catch (err) {
+    console.error('Fetch user movies error:', err.message);
     res.status(500).json({ error: 'Failed to fetch user movies', details: err.message });
   }
 });
 
-// Add a movie to a user's list (referencing an existing movie or creating a new one)
+// Add a movie to a user's list
 router.post('/:id/movies', async (req, res) => {
   try {
     const userId = req.params.id;
     const { title } = req.body;
-
     if (!title) return res.status(400).json({ error: 'Movie title is required' });
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    // Check if movie already exists (optional)
     let movie = await Movie.findOne({ title });
     if (!movie) {
       movie = new Movie({ title, ratings: [] });
       await movie.save();
     }
-
-    // Prevent duplicates
     if (!user.movies.includes(movie._id)) {
       user.movies.push(movie._id);
       await user.save();
     }
-
     res.status(201).json(movie);
   } catch (err) {
+    console.error('Add movie to user error:', err.message);
     res.status(500).json({ error: 'Failed to add movie to user', details: err.message });
   }
 });

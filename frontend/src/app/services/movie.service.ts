@@ -7,32 +7,37 @@ import { Movie } from '../models/movie';
   providedIn: 'root'
 })
 export class MovieService {
-  private base = '/api/movies';
+  private apiRoot = 'http://localhost:3000/api'
 
-  constructor (private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Movie[]> { 
-    return this.http.get<Movie[]>(this.base);
-  }
-  
-  getById(id: string):Observable<Movie> { 
-    return this.http.get<Movie>(`${this.base}/${id}`);
-  }
-  
-  create(movie: Movie): Observable<Movie> { 
-    return this.http.post<Movie>(this.base, movie);
+  getAll(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${this.apiRoot}/movies`);
   }
 
-  update(id: string, movie: Movie): Observable<Movie> { 
-    return this.http.put<Movie>(`${this.base}/${id}`, movie);
+  getById(id: string): Observable<Movie> {
+    return this.http.get<Movie>(`${this.apiRoot}/movies/${id}`);
   }
 
-  delete(id: string): Observable<void> { 
-    return this.http.delete<void>(`${this.base}/${id}`);
+  searchOmdb(title: string): Observable<{ Search: Movie[] }> {
+    const q = encodeURIComponent(title.trim());
+    return this.http.get<{ Search: Movie[] }>(
+      `${this.apiRoot}/omdb/search?title=${q}`
+    );
   }
 
-  searchOmdb(title: string) {
-    return this.http.get<{Search: Movie[]}>(`/api/omdb/search?title=${encodeURIComponent(title)}`);
+  create(movie: Movie): Observable<Movie> {
+    return this.http.post<Movie>(`${this.apiRoot}/movies`, movie);
   }
 
+  update(id: string, movie: Partial<Movie>): Observable<Movie> {
+    return this.http.put<Movie>(
+      `${this.apiRoot}/movies/${id}`,
+      movie
+    );
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiRoot}/movies/${id}`);
+  }
 }

@@ -1,6 +1,5 @@
 # macOS system files
 .DS_Store
-
 # Node dependencies
 frontend/node_modules/
 server/node_modules/
@@ -26,3 +25,6 @@ server/yarn-error.log
 
 # Misc
 *.log
+*.env
+
+node_modules/
