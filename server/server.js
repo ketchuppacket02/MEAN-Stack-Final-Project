@@ -1,6 +1,6 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+MONGODB_URI='mongodb://localhost:27017/filmfiend'
 
 const app = express();
 app.use(cors({
@@ -18,7 +18,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/omdb',  omdbRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
@@ -26,7 +26,7 @@ app.listen(PORT, () => {
 
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(MONGODB_URI, {
      useNewUrlParser: true,   
      useUnifiedTopology: true
     })

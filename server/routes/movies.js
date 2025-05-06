@@ -1,10 +1,9 @@
-// routes/movies.js
 const express = require('express');
 const router  = express.Router();
 const axios   = require('axios');
 const Movie   = require('../models/movie');
 
-const OMDB_API_KEY = process.env.OMDB_API_KEY;
+const OMDB_API_KEY = '2e634a94';
 
 router.get('/search', async (req, res) => {
   const { title } = req.query;
@@ -47,7 +46,10 @@ router.post('/', async (req, res) => {
       }
       movie = new Movie({
         title:   response.data.Title,
+        year:    response.data.Year,
         imdbID:  response.data.imdbID,
+        type:   response.data.Type,
+        poster:  response.data.Poster,
         ratings: response.data.Ratings
       });
       await movie.save();
