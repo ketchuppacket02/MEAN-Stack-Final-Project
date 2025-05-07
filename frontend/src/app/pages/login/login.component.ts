@@ -28,14 +28,37 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    console.log('Login form submitted');
     if (this.loginForm.invalid) {
       this.errorMsg = "Both fields are required";
+      console.log('Form invalid:', this.loginForm.value);
       return;
     }
     const { username, password } = this.loginForm.value;
+    console.log('Attempting login with:', username);
     this.authService.login(username, password).subscribe({
-      next: () => this.router.navigate(['/user']),
-      error: () => (this.errorMsg = 'Login failed, try again.')
+      next: response => {
+        console.log('Login response:', response);
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          const user = this.authService.getUserFromToken();
+          console.log('Decoded user from token:', user);
+          if (user) {
+            localStorage.setItem('userId', user.id);
+            this.router.navigate(['/user']);
+          } else {
+            this.errorMsg = 'Login failed: invalid token.';
+            console.log('Invalid token received');
+          }
+        } else {
+          this.errorMsg = 'Login failed: no token in response.';
+          console.log('No token in response:', response);
+        }
+      },
+      error: (err) => {
+        this.errorMsg = 'Login failed, try again.';
+        console.log('Login error:', err);
+      }
     });
   }
 }

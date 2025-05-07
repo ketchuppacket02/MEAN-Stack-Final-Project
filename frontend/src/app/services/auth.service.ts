@@ -21,7 +21,7 @@ export interface MovieList {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   
-  private api = `${environment.apiUrl}/users`;
+  private api = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 
