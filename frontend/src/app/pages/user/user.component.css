@@ -1,19 +1,77 @@
 .user-container {
-  max-width: 400px;
-  margin: 4rem auto;
-  padding: 2rem 2.5rem;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 80px; /* Prevent navbar overlap */
 }
+
+.movie-lists {
+  list-style: none;
+  padding: 0;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list-name {
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.list-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.open-btn, .delete-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.open-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.open-btn:hover {
+  background-color: #45a049;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #da190b;
+}
+
+.error {
+  color: #f44336;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #ffebee;
+  border-radius: 4px;
+}
+
 .user-container h2 {
   font-family: 'Segoe UI', Arial, sans-serif;
   font-weight: 700;
   margin-bottom: 2rem;
 }
+
 .user-container button {
   padding: 0.6rem 2rem;
   background: #1976d2;
@@ -25,6 +83,7 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .user-container button:hover {
   background: #125ea2;
 } 

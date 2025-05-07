@@ -46,4 +46,16 @@ export class MovieService {
       `${this.apiRoot}/users/${encodeURIComponent(userId)}/movies`
     );
   }
+
+  getMoviesForList(userId: string, listId: string): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`/api/users/${userId}/lists/${listId}`);
+  }
+
+  addMovieToList(userId: string, listId: string, movieId: string): Observable<any> {
+    return this.http.post(`/api/users/${userId}/lists/${listId}/movies`, { movieId });
+  }
+
+  removeMovieFromList(userId: string, listId: string, movieId: string): Observable<any> {
+    return this.http.delete(`/api/users/${userId}/lists/${listId}/movies/${movieId}`);
+  }
 }

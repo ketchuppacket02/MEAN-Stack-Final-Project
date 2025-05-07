@@ -3,6 +3,7 @@ import { Movie } from '../../models/movie';
 import { MovieService } from '../../services/movie.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-movie-list',
@@ -18,13 +19,25 @@ export class MovieListComponent {
   searchTitle = '';
   searching = false;
   selectedMovie: Movie | null = null;
+  userId = '';
+  listId = '';
 
-  constructor(private MovieService: MovieService) {}
+  constructor(private MovieService: MovieService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.MovieService.getAll().subscribe({
+    this.userId = localStorage.getItem('userId') || '';
+    this.route.queryParams.subscribe(params => {
+      this.listId = params['listId'] || '';
+      if (this.userId && this.listId) {
+        this.fetchMovies();
+      }
+    });
+  }
+
+  fetchMovies() {
+    this.MovieService.getMoviesForList(this.userId, this.listId).subscribe({
       next: (movies) => (this.movies = movies),
-      error: (err) => (this.error = err)
+      error: (err) => (this.error = 'Failed to load movies for this list')
     });
   }
 
@@ -50,6 +63,7 @@ export class MovieListComponent {
   }
 
   addMovieFromOmdb(movie: any) {
+    // First, create the movie in the DB if it doesn't exist
     this.MovieService.create({
       title: movie.Title,
       year: movie.Year,
@@ -58,9 +72,22 @@ export class MovieListComponent {
       poster: movie.Poster
     } as Movie).subscribe({
       next: (newMovie) => {
-        this.movies.push(newMovie);
-        this.omdbResults = [];
-        this.searchTitle = '';
+        // Type guard for newMovie._id
+        if (!newMovie._id) {
+          this.error = 'Movie creation failed: missing ID';
+          return;
+        }
+        // Then, add it to this list
+        this.MovieService.addMovieToList(this.userId, this.listId, newMovie._id).subscribe({
+          next: () => {
+            this.movies.push(newMovie);
+            this.omdbResults = [];
+            this.searchTitle = '';
+          },
+          error: () => {
+            this.error = 'Failed to add movie to list';
+          }
+        });
       },
       error: (err) => {
         this.error = 'Failed to add movie';
@@ -78,12 +105,12 @@ export class MovieListComponent {
 
   removeMovie(movie: Movie) {
     if (!movie._id) return;
-    this.MovieService.delete(movie._id).subscribe({
+    this.MovieService.removeMovieFromList(this.userId, this.listId, movie._id).subscribe({
       next: () => {
         this.movies = this.movies.filter(m => m._id !== movie._id);
       },
       error: () => {
-        this.error = 'Failed to remove movie';
+        this.error = 'Failed to remove movie from list';
       }
     });
   }

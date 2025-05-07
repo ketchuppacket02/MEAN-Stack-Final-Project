@@ -1,4 +1,21 @@
 <div class="user-container">
   <h2>Welcome!</h2>
-  <button (click)="goToMovieList()">Create a List</button>
+  <button (click)="createList()">Create a List</button>
+
+  <div *ngIf="loading">Loading lists...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="movieLists.length">
+    <h3>Your Movie Lists</h3>
+    <ul class="movie-lists">
+      <li *ngFor="let list of movieLists" class="list-item">
+        <span class="list-name">{{ list.name }}</span>
+        <div class="list-actions">
+          <button (click)="goToMovieList(list)" class="open-btn">Open</button>
+          <button (click)="deleteList(list)" class="delete-btn">Delete</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="!loading && !movieLists.length">No movie lists yet.</div>
 </div> 
