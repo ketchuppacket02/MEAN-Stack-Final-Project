@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface TokenResponse {
   token: string;
@@ -20,20 +21,31 @@ export interface MovieList {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   
-  private api = '/api/users';
+  private api = `${environment.apiUrl}/users`;
 
   constructor(private http: HttpClient) {}
 
-  register(username: string, password: string): Observable<User> {
-    return this.http.post<User>(`${this.api}/register`, { username, password }).pipe(
-      tap(user => localStorage.setItem('userId', user._id))
+  register(username: string, password: string): Observable<TokenResponse> {
+    return this.http.post<TokenResponse>(`${this.api}/register`, { username, password }).pipe(
+      tap(response => {
+        localStorage.setItem('token', response.token);
+        const user = this.getUserFromToken();
+        if (user) {
+          localStorage.setItem('userId', user.id);
+        }
+      })
     );
   }
 
-  /** Real HTTP call for login, expects user object with _id */
-  login(username: string, password: string): Observable<User> {
-    return this.http.post<User>(`${this.api}/login`, { username, password }).pipe(
-      tap(user => localStorage.setItem('userId', user._id))
+  login(username: string, password: string): Observable<TokenResponse> {
+    return this.http.post<TokenResponse>(`${this.api}/login`, { username, password }).pipe(
+      tap(response => {
+        localStorage.setItem('token', response.token);
+        const user = this.getUserFromToken();
+        if (user) {
+          localStorage.setItem('userId', user.id);
+        }
+      })
     );
   }
 
@@ -47,7 +59,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('userId');
+    return !!this.getToken();
   }
 
   getUserFromToken(): { id: string; username: string } | null {
