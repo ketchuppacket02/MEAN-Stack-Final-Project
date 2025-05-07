@@ -1,0 +1,17 @@
+<main class="home">
+    <h1>Welcome back, {{ username }}!</h1>
+  
+    <section class="watchlist-preview">
+      <h2>Your Watchlist</h2>
+      <ul *ngIf="myMovies.length; else noMovies">
+        <li *ngFor="let m of myMovies">
+          <a [routerLink]="['/movies', m._id]">{{ m.title }}</a>
+        </li>
+      </ul>
+      <ng-template #noMovies>
+        <p>You haven’t added any movies yet.</p>
+      </ng-template>
+      <button routerLink="/movies">See All →</button>
+    </section>
+  </main>
+  

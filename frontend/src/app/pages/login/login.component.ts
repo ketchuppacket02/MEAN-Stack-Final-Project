@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -27,15 +26,24 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
+
   onSubmit() {
+    // don't proceed if form invalid
     if (this.loginForm.invalid) {
-      this.errorMsg = "Both fields are required";
       return;
     }
+
     const { username, password } = this.loginForm.value;
     this.authService.login(username, password).subscribe({
-      next: () => this.router.navigate(['/user']),
-      error: () => (this.errorMsg = 'Login failed, try again.')
+      next: ({ token }) => {
+        // store JWT and navigate
+        localStorage.setItem('jwt', token);
+        this.router.navigate(['/home']);
+      },
+      error: err => {
+        // show backend‐sent message or fallback
+        this.errorMsg = err.error?.message || 'Login failed';
+      }
     });
   }
 }

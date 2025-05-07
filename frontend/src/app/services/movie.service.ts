@@ -40,4 +40,10 @@ export class MovieService {
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiRoot}/movies/${id}`);
   }
+  
+  getMyMovies(userId: string): Observable<Movie[]> {
+    return this.http.get<Movie[]>(
+      `${this.apiRoot}/users/${encodeURIComponent(userId)}/movies`
+    );
+  }
 }

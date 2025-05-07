@@ -14,14 +14,16 @@ app.use(express.json());
 const userRoutes  = require('./routes/users');
 const movieRoutes = require('./routes/movies');
 const omdbRoutes  = require('./routes/omdb');
+const authRoutes  = require('./routes/auth');
 
 app.use('/api/users', userRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/omdb',  omdbRoutes);
+app.use('/api/auth',  authRoutes);
 
 const PORT = 3000;
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/filmfiend', {
+mongoose.connect(process.env.MONGODB_URI, {
      useNewUrlParser: true,   
      useUnifiedTopology: true
     })
