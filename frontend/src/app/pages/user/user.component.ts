@@ -72,7 +72,7 @@ export class UserComponent implements OnInit {
 
   deleteList(list: MovieList) {
     if (confirm(`Are you sure you want to delete the list "${list.name}"?`)) {
-      this.authService.deleteMovieList(this.userId, list.name).subscribe({
+      this.authService.deleteMovieList(this.userId, list._id).subscribe({
         next: () => {
           this.movieLists = this.movieLists.filter(l => l._id !== list._id);
         },

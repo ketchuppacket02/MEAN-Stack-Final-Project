@@ -61,7 +61,7 @@ export class AuthService {
     }
   }
 
-  deleteMovieList(userId: string, listName: string): Observable<any> {
-    return this.http.delete(`${this.api}/${userId}/lists/${listName}`);
+  deleteMovieList(userId: string, listId: string): Observable<any> {
+    return this.http.delete(`${this.api}/${userId}/lists/${listId}`);
   }
 }
