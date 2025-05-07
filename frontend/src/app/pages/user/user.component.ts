@@ -30,6 +30,10 @@ export class UserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (!this.userId) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.fetchMovieLists();
   }
 

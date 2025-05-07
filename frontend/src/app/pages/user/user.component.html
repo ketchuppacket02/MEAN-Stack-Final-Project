@@ -10,6 +10,11 @@
     <ul class="movie-lists">
       <li *ngFor="let list of movieLists" class="list-item">
         <span class="list-name">{{ list.name }}</span>
+        <div class="list-previews">
+          <ng-container *ngFor="let movie of list.movies | slice:0:3">
+            <img *ngIf="movie.poster && movie.poster !== 'N/A'" [src]="movie.poster" [alt]="movie.title" class="preview-poster">
+          </ng-container>
+        </div>
         <div class="list-actions">
           <button (click)="goToMovieList(list)" class="open-btn">Open</button>
           <button (click)="deleteList(list)" class="delete-btn">Delete</button>
