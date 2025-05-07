@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,9 +15,9 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<{ token: string }> {
-    return this.http
-      .post<{ token: string }>(`${this.api}/login`, { username, password })
-      .pipe(tap(res => localStorage.setItem('token', res.token)));
+    return of({ token: 'DUMMY_TOKEN' }).pipe(
+      tap(res => localStorage.setItem('token', res.token))
+    );
   }
 
   logout(): void {
@@ -26,5 +26,13 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  signup(username: string): Observable<any> {
+    return this.http.post('/api/users', { username });
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

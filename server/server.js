@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-
-MONGODB_URI='mongodb+srv://victor14esc:vQ3W5GneOZUJ8LuG@cluster0.kjyzvrr.mongodb.net/'
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 app.use(cors({
@@ -14,24 +14,21 @@ app.use(express.json());
 const userRoutes  = require('./routes/users');
 const movieRoutes = require('./routes/movies');
 const omdbRoutes  = require('./routes/omdb');
-const authRoutes = require('./routes/auth');
 
 app.use('/api/users', userRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/omdb',  omdbRoutes);
-app.use('/api/auth', authRoutes);
 
 const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
-
-
-const mongoose = require('mongoose');
-mongoose.connect(MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/filmfiend', {
      useNewUrlParser: true,   
      useUnifiedTopology: true
     })
-    .then(() => console.log('Connected to MongoDB'))
+    .then(() => {
+      console.log('Connected to MongoDB');
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    })
     .catch(err => console.error('MongoDB connection error:', err));
