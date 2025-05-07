@@ -1,10 +1,8 @@
-// routes/users.js
 const express = require('express');
 const router  = express.Router();
 const User    = require('../models/user');
 const Movie   = require('../models/movie');
 
-// Create a new user
 router.post('/', async (req, res) => {
   try {
     const { username } = req.body;
@@ -19,7 +17,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get a user's movie list
 router.get('/:id/movies', async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate('movies');
@@ -32,7 +29,6 @@ router.get('/:id/movies', async (req, res) => {
   }
 });
 
-// Add a movie to a user's list
 router.post('/:id/movies', async (req, res) => {
   try {
     const userId = req.params.id;

@@ -4,7 +4,6 @@ const router  = express.Router();
 
 const apiKey = '2e634a94';
 
-// GET /api/omdb/search?title=movieTitle
 router.get('/search', async (req, res) => {
   const { title } = req.query;
   if (!title) {
