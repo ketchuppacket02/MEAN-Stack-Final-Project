@@ -6,7 +6,10 @@ const http = require('http');
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:4200'
+  origin: [
+   'http://localhost:4200',
+   'https://mean-final-ad30f1ae847d.herokuapp.com'
+  ]
 }));
 
 app.use(express.json());
@@ -67,3 +70,7 @@ function onListening() {
   const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   console.log('Listening on ' + bind);
 }
+
+app.get('/test', (req, res) => {
+  res.send('Test route works!');
+});
