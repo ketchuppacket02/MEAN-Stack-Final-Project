@@ -2,7 +2,7 @@ const express = require('express');
 const axios   = require('axios');
 const router  = express.Router();
 
-const apiKey = '2e634a94';
+const apiKey = process.env.OMDB_API_KEY;
 
 router.get('/search', async (req, res) => {
   const { title } = req.query;

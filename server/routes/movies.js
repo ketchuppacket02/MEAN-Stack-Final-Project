@@ -3,7 +3,7 @@ const router  = express.Router();
 const axios   = require('axios');
 const Movie   = require('../models/movie');
 
-const OMDB_API_KEY = '2e634a94';
+const OMDB_API_KEY = process.env.OMDB_API_KEY;
 
 router.get('/search', async (req, res) => {
   const { title } = req.query;
