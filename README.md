@@ -33,7 +33,7 @@
 
 2. Install dependencies:
    ```bash
-   npm install
+   npm start
    ```
 
 3. Configure the API URL:
@@ -70,19 +70,3 @@ If you encounter any issues:
    - Store your JWT token
    - Extract and store your user ID
    - Use the token for authenticated requests
-
-## Common Issues
-1. **Can't connect to backend**: 
-   - Ensure the backend is running on port 3000
-   - Check that the `apiUrl` in environment.ts matches your backend URL
-   - Verify CORS is properly configured
-
-2. **Authentication fails**:
-   - Check that MongoDB is running
-   - Verify your `.env` file has the correct `MONGODB_URI` and `JWT_SECRET`
-   - Clear your browser's localStorage and try logging in again
-
-3. **Database connection issues**:
-   - Ensure MongoDB is installed and running
-   - Check that the MongoDB URI in your `.env` file is correct
-   - Try connecting to MongoDB using a client like MongoDB Compass to verify the connection
