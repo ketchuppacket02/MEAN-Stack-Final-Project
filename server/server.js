@@ -5,12 +5,8 @@ require('dotenv').config();
 const http = require('http');
 
 const app = express();
-app.use(cors({
-  origin: [
-   'http://localhost:4200',
-   'https://mean-final-ad30f1ae847d.herokuapp.com'
-  ]
-}));
+app.use(cors(
+));
 
 app.use(express.json());
 

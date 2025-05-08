@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 interface MovieList {
   _id: string;
@@ -39,7 +40,7 @@ export class UserComponent implements OnInit {
 
   fetchMovieLists() {
     this.loading = true;
-    this.http.get<MovieList[]>(`/api/users/${this.userId}/lists`).subscribe({
+    this.http.get<MovieList[]>(`${environment.apiUrl}/users/${this.userId}/lists`).subscribe({
       next: lists => {
         this.movieLists = lists;
         this.loading = false;
@@ -65,7 +66,7 @@ export class UserComponent implements OnInit {
       return;
     }
 
-    this.http.post<MovieList>(`/api/users/${this.userId}/lists`, { name }).subscribe({
+    this.http.post<MovieList>(`${environment.apiUrl}/users/${this.userId}/lists`, { name }).subscribe({
       next: list => {
         this.movieLists.push(list);
         this.goToMovieList(list);
