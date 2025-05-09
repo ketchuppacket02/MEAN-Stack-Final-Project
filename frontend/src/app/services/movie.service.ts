@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Movie } from '../models/movie';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-  private apiRoot = 'http://localhost:3000/api'
+  private apiRoot = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -48,14 +49,14 @@ export class MovieService {
   }
 
   getMoviesForList(userId: string, listId: string): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`/api/users/${userId}/lists/${listId}`);
+    return this.http.get<Movie[]>(`${this.apiRoot}/users/${userId}/lists/${listId}`);
   }
 
   addMovieToList(userId: string, listId: string, movieId: string): Observable<any> {
-    return this.http.post(`/api/users/${userId}/lists/${listId}/movies`, { movieId });
+    return this.http.post(`${this.apiRoot}/users/${userId}/lists/${listId}/movies`, { movieId });
   }
 
   removeMovieFromList(userId: string, listId: string, movieId: string): Observable<any> {
-    return this.http.delete(`/api/users/${userId}/lists/${listId}/movies/${movieId}`);
+    return this.http.delete(`${this.apiRoot}/users/${userId}/lists/${listId}/movies/${movieId}`);
   }
 }
